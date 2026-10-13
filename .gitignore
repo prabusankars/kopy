@@ -1,2 +1,11 @@
 /target
 *.kopy-tmp
+
+# Python (python/ folder)
+__pycache__/
+*.pyc
+.pytest_cache/
+python/build/
+python/dist/
+python/*.spec
+python/*.egg-info/

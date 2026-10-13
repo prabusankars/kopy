@@ -3,6 +3,10 @@
 A robocopy-style file copier in Rust, tuned for copying from a Windows file server
 (SMB share) to a USB secure drive such as a Kanguru Defender.
 
+> **Python version:** [`python/`](python/) has a standard-library-only Python port
+> with the same flags, safety behaviour and exit codes, plus a PyInstaller build
+> script with an icon. See [python/README.md](python/README.md).
+
 ## Build (on the Windows machine)
 
 ```powershell

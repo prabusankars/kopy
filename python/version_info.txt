@@ -1,0 +1,30 @@
+# Windows version resource for PyInstaller (--version-file).
+# Shown in Explorer > Properties > Details and in Task Manager's "Description".
+# Keep filevers/prodvers and the string versions in step with kopy/__init__.py.
+VSVersionInfo(
+  ffi=FixedFileInfo(
+    filevers=(0, 1, 0, 0),
+    prodvers=(0, 1, 0, 0),
+    mask=0x3f,
+    flags=0x0,
+    OS=0x40004,
+    fileType=0x1,
+    subtype=0x0,
+    date=(0, 0)
+  ),
+  kids=[
+    StringFileInfo([
+      StringTable('040904B0', [
+        StringStruct('CompanyName', 'Prabu'),
+        StringStruct('FileDescription', 'kopy - secure file copy from server to USB drive'),
+        StringStruct('FileVersion', '0.1.0'),
+        StringStruct('InternalName', 'kopy'),
+        StringStruct('OriginalFilename', 'kopy.exe'),
+        StringStruct('ProductName', 'kopy'),
+        StringStruct('ProductVersion', '0.1.0'),
+        StringStruct('LegalCopyright', 'MIT License')
+      ])
+    ]),
+    VarFileInfo([VarStruct('Translation', [0x0409, 1200])])
+  ]
+)
