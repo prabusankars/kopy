@@ -18,6 +18,18 @@ cargo build --release
 cargo test
 ```
 
+### Signing (internal use)
+
+```powershell
+.\sign.ps1 -Subject "CN=Your Org IT Tools"   # build + sign + timestamp + verify
+```
+
+The first run creates a self-signed code-signing certificate in `Cert:\CurrentUser\My`;
+later runs reuse it. Deploy `target\release\kopy-signing.cer` via Group Policy to
+**Trusted Root Certification Authorities** and **Trusted Publishers** on the machines
+that run kopy, and ask IT to allow-list the publisher (not the file hash) in the
+antivirus. Use `-TrustLocally` to test trust on the build machine.
+
 ## Usage
 
 ```powershell

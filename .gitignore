@@ -1,6 +1,10 @@
 /target
 *.kopy-tmp
 
+# Code signing: never commit private keys
+*.pfx
+*.p12
+
 # Python (python/ folder)
 __pycache__/
 *.pyc
