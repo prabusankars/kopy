@@ -1,0 +1,29 @@
+[package]
+name = "kopy"
+version = "0.1.0"
+edition = "2021"
+description = "Robust, fast robocopy-style file copier tuned for network share -> USB secure drive (e.g. Kanguru Defender)"
+license = "MIT"
+
+[dependencies]
+anyhow = "1"
+thiserror = "2"
+clap = { version = "4", features = ["derive"] }
+walkdir = "2"
+globset = "0.4"
+filetime = "0.2"
+blake3 = "1"
+crossbeam-channel = "0.5"
+indicatif = "0.17"
+ctrlc = "3"
+fs4 = "1"
+humantime = "2"
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+strip = true
