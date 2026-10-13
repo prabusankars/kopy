@@ -14,6 +14,7 @@ use crossbeam_channel::bounded;
 use filetime::FileTime;
 use std::fs::{self, File, OpenOptions};
 use std::io::{self, Read, Write};
+use std::panic::{self, AssertUnwindSafe};
 use std::path::Path;
 use std::sync::atomic::{AtomicBool, Ordering::Relaxed};
 use std::time::Duration;
@@ -79,7 +80,16 @@ fn attempt_copy(ctx: &Ctx, job: &Job, written: &mut u64) -> Result<u64, CopyErro
         fs::create_dir_all(parent).map_err(|e| classify("create directory", parent, Side::Dest, e))?;
     }
     let tmp = temp_path(&job.dst);
-    let res = write_and_commit(ctx, job, &tmp, written);
+    // A bug hit on one file must not kill the whole run or leak its temp file.
+    let res = panic::catch_unwind(AssertUnwindSafe(|| write_and_commit(ctx, job, &tmp, written)))
+        .unwrap_or_else(|payload| {
+            Err(CopyError::Io {
+                op: "copy",
+                path: job.src.clone(),
+                retryable: false,
+                source: io::Error::other(format!("internal error: {}", panic_message(&*payload))),
+            })
+        });
     if res.is_err() {
         // Never leave half-written data behind; ignore failure (drive may be gone).
         let _ = fs::remove_file(&tmp);
@@ -254,6 +264,14 @@ fn copy_pipelined(
             None => Err(CopyError::Cancelled),
         }
     })
+}
+
+pub fn panic_message(payload: &(dyn std::any::Any + Send)) -> &str {
+    payload
+        .downcast_ref::<&str>()
+        .copied()
+        .or_else(|| payload.downcast_ref::<String>().map(String::as_str))
+        .unwrap_or("unknown panic")
 }
 
 /// Fill `buf` completely unless EOF; network reads often return short.

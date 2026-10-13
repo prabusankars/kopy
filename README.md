@@ -14,6 +14,7 @@ A robocopy-style file copier in Rust, tuned for copying from a Windows file serv
 cd kopy
 cargo build --release
 # binary: target\release\kopy.exe  (single static exe, copy it anywhere)
+# build.rs embeds assets\kopy.ico and version info (needs the Windows SDK's rc.exe)
 cargo test
 ```
 
